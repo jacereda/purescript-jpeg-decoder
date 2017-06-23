@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "dependencies": {
+    "jpeg-js": "^0.2.0"
+  }
+}
