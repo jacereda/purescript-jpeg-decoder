@@ -1,6 +1,7 @@
 {
   "private": true,
+  "name": "purescript-jpeg-decoder",
   "dependencies": {
-    "jpeg-js": "^0.2.0"
+    "jpeg-js": "github:eugeneware/jpeg-js#v0.3.3"
   }
 }
