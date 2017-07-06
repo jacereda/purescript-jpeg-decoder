@@ -5,7 +5,9 @@ exports.decodeImpl = function(left) {
     return function(right) {
 	return function(ab) {
 	    try {
-		return right(jpeg.decode(ab, true));
+		var d = jpeg.decode(ab, true);
+		d.data = d.data.buffer;
+		return right(d);
 	    } catch (e) {
 		return left(e);
 	    };

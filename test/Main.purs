@@ -8,6 +8,7 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import Data.Either (Either(..))
 import Data.Image.JPEG.Decoder (decode)
 import Network.HTTP.Affjax (AJAX, get)
+import Data.ArrayBuffer.ArrayBuffer (byteLength)
 
 main :: forall e. Eff (exception :: EXCEPTION, ajax :: AJAX, console :: CONSOLE | e) Unit
 main = void $ launchAff do
@@ -21,7 +22,7 @@ main = void $ launchAff do
             Right res -> do
               case decode res.response of
                 Left err -> report err
-                Right im -> log $ show im.width <> "x" <> show im.height
+                Right im -> log $ show im.width <> "x" <> show im.height <> " length:" <> show (byteLength im.data)
               pure unit
           pure unit
 
