@@ -1,7 +1,6 @@
 module Data.Image.JPEG.Decoder where
 
-import Prelude
-import Control.Monad.Eff.Exception (Error, error)
+import Control.Monad.Eff.Exception (Error)
 import Data.ArrayBuffer.Types (ArrayBuffer)
 import Data.Either (Either(..))
 

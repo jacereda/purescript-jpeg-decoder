@@ -25,5 +25,4 @@ main = void $ launchAff do
                 Right im -> log $ show im.width <> "x" <> show im.height <> " length:" <> show (byteLength im.data)
               pure unit
           pure unit
-
         report e = log $ "Error : " <> show e
