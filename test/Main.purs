@@ -1,28 +1,31 @@
 module Test.Main where
 
 import Prelude
-import Control.Monad.Aff (attempt, launchAff)
-import Control.Monad.Aff.Console (CONSOLE, log)
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Exception (EXCEPTION)
+
+import Data.ArrayBuffer.ArrayBuffer (byteLength)
 import Data.Either (Either(..))
 import Data.Image.JPEG.Decoder (decode)
-import Network.HTTP.Affjax (AJAX, get)
-import Data.ArrayBuffer.ArrayBuffer (byteLength)
+import Effect (Effect)
+import Effect.Aff (Aff, attempt, launchAff_)
+import Effect.Class (liftEffect)
+import Effect.Console (log)
+import Network.HTTP.Affjax (get)
+import Network.HTTP.Affjax.Response as Response
 
-main :: forall e. Eff (exception :: EXCEPTION, ajax :: AJAX, console :: CONSOLE | e) Unit
-main = void $ launchAff do
-  tst "https://sateuhtoaeuteosua.net/computervision/images/3/34/Lenna.jpg"  
+main :: Effect Unit
+main = launchAff_ do
+  tst "https://sateuhtoaeuteosua.net/computervision/images/3/34/Lenna.jpg"
   tst "https://vignette2.wikia.nocookie.net/computervision/images/3/34/Lenna.jpg"
   tst "https://vignette2.wikia.nocookie.net/computervision/foo"
   where tst url = do
-          response <- attempt $ get url
+          response <- attempt $ get Response.arrayBuffer url
           case response of
-            Left err -> report err
-            Right res -> do
-              case decode res.response of
-                Left err -> report err
-                Right im -> log $ show im.width <> "x" <> show im.height <> " length:" <> show (byteLength im.data)
-              pure unit
+             Left err -> report err
+             Right res -> do
+               case decode res.response of
+                 Left err -> report err
+                 Right im -> print $ show  im.width <> "x" <> show im.height <> " length:" <> show (byteLength im.data)
+               pure unit
           pure unit
-        report e = log $ "Error : " <> show e
+        print = liftEffect <<< log
+        report = print <<< show
